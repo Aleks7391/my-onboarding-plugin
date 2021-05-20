@@ -55,11 +55,11 @@ function ag_create_my_onboarding_options_page() {
         'My Onboarding',
         'manage_options',
         'onboarding',
-        'ag_create_onboard_settings_page'
+        'ag_render_onboard_settings_page'
     );
 }
 
-function ag_create_onboard_settings_page() {
+function ag_render_onboard_settings_page() {
 	?>
 	<div class="wrap">
 		<form method="post" action="options.php">
