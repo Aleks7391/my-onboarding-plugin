@@ -32,8 +32,8 @@ function send_email_on_profile_edit() {
 	wp_mail( $admin_email, 'Profile Update', 'Your profile has just been updated' );
 }
 
+add_action( 'admin_menu', 'ag_create_my_onboarding_options_page', 5 );
 add_action( 'admin_init', 'ag_initialize_my_onboarding_options', 6 );
-add_action( 'admin_menu', 'ag_create_my_onboarding_options_page', 6 );
 
 add_action( 'init', 'ag_apply_filter' );
 
@@ -50,34 +50,48 @@ function ag_apply_filter() {
 }
 
 function ag_create_my_onboarding_options_page() {
-    add_options_page(
+    add_menu_page(
         'My Onboarding Options',
         'My Onboarding',
         'manage_options',
         'onboarding',
-        'ag_initialize_my_onboarding_options'
+        'ag_create_onboard_settings_page'
     );
 }
 
+function ag_create_onboard_settings_page() {
+	?>
+	<div class="wrap">
+		<form method="post" action="options.php">
+		<?php
+		settings_fields( 'onboarding' );
+		do_settings_sections( 'onboarding' );
+		submit_button();
+		?>
+		</form>
+	</div>
+	<?php
+}
+
 function ag_initialize_my_onboarding_options() {
+	register_setting(
+		'onboarding',
+		'toggle_filter'
+	);
+
     add_settings_section(
         'ag-my-onboarding-section',          // ID
         'My Onboarding',                     // Title
         'ag_my_onboarding_options_callback', // Callback
-        'general'                            // Page
+        'onboarding'                         // Page
     );
      
     add_settings_field( 
         'toggle_filter',                     // ID
         'Filter',                            // Label
         'ag_toggle_filter_callback',         // Callback
-        'general',                           // Page
+        'onboarding',                        // Page
         'ag-my-onboarding-section'           // Section
-    );
-
-    register_setting(
-        'general',
-        'toggle_filter'
     );
 }
 
@@ -86,6 +100,9 @@ function ag_my_onboarding_options_callback() {
 }
 
 function ag_toggle_filter_callback() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
     $html = '<input type="checkbox" id="toggle_filter" name="toggle_filter" value="1" ' . checked(1, get_option('toggle_filter'), false) . '/>'; 
     $html .= '<label for="toggle_filter"> Activate this setting to toggle the filter.</label>'; 
      
