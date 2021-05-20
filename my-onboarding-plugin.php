@@ -18,7 +18,6 @@ function ag_add_hidden_div( $content ) {
 
 function ag_add_paragraph( $content ) {
 	return preg_replace( '<p>', 'p>This Paragraph was added programmatically.</p><p', $content, 1 );
-	return $paragraph . $content;
 }
 
 function add_profile_settings_link( $items ) {
@@ -45,7 +44,7 @@ function ag_apply_filter() {
 		add_filter( 'the_content', 'ag_add_paragraph', 9 );
 		add_filter( 'the_content', 'ag_add_hidden_div', 10 );
 		add_filter( 'wp_nav_menu_items', 'add_profile_settings_link', 11 );
-		add_action( 'profile_update', 'send_email_on_profile_edit' );		
+		add_action( 'profile_update', 'send_email_on_profile_edit' );
 	}
 }
 
