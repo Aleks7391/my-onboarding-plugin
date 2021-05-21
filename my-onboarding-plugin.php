@@ -61,7 +61,7 @@ function ag_create_my_onboarding_options_page() {
 function ag_render_onboard_settings_page() {
 	?>
 	<div class="wrap">
-		<form method="post" action="options.php">
+		<form method="POST" action="options.php">
 		<?php
 		settings_fields( 'onboarding' );
 		do_settings_sections( 'onboarding' );
@@ -102,7 +102,7 @@ function ag_toggle_filter_callback() {
 	if (!current_user_can('manage_options'))  {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-    $html = '<input type="checkbox" id="toggle_filter" name="toggle_filter" value="1" ' . checked(1, get_option('toggle_filter'), false) . '/>'; 
+    $html = '<input type="checkbox" id="toggle_filter" name="toggle_filter" value="1" ' . checked(1, get_option( 'toggle_filter' ), false) . '/>'; 
     $html .= '<label for="toggle_filter"> Activate this setting to toggle the filter.</label>'; 
      
     echo $html;
