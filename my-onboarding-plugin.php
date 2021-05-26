@@ -7,8 +7,8 @@
  */
 
 function ag_change_content( $content ) {
-	$prepend = 'Onboarding Filter: ';
-	$append = ' by Aleks Ganev';
+	$prepend = '<p>Onboarding Filter: </p>';
+	$append = '<p>by Aleks Ganev</p>';
 	return $prepend . $content . $append;
 }
 
@@ -34,17 +34,17 @@ function send_email_on_profile_edit() {
 add_action( 'admin_menu', 'ag_create_my_onboarding_options_page', 5 );
 add_action( 'admin_init', 'ag_initialize_my_onboarding_options', 6 );
 
-add_action( 'init', 'ag_apply_filter' );
+add_action( 'template_redirect', 'ag_apply_filter' );
 
 function ag_apply_filter() {
 	$option = get_option( 'toggle_filter' );
-	if ( $option === '1' ) {
-		add_filter( 'the_content', 'ag_change_content', 7 );
-		add_filter( 'the_content', 'ag_add_hidden_div', 8 );
-		add_filter( 'the_content', 'ag_add_paragraph', 9 );
-		add_filter( 'the_content', 'ag_add_hidden_div', 10 );
-		add_filter( 'wp_nav_menu_items', 'add_profile_settings_link', 11 );
-		add_action( 'profile_update', 'send_email_on_profile_edit' );
+	if  ( is_singular( 'student' ) && '1' === $option ) {
+		add_filter( 'the_content', 'ag_add_hidden_div' );
+		add_filter( 'the_content', 'ag_add_paragraph' );
+		add_filter( 'the_content', 'ag_add_hidden_div', 11 );
+		add_filter( 'the_content', 'ag_change_content', 12 );
+		add_filter( 'wp_nav_menu_items', 'add_profile_settings_link' );
+		add_action( 'profile_update', 'send_email_on_profile_edit' );	
 	}
 }
 
